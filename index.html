@@ -9,6 +9,7 @@
     --text:#18140f; --dim:#6b6560; --dim2:#9e9890; --dim3:#ece7e0;
     --gold:#b8935a; --gold-soft:rgba(184,147,90,0.14); --gold-soft2:rgba(184,147,90,0.28);
     --coral:#c9583a;
+    --recipe-gold:#B8882A; --recipe-green:#3A6B32;
     --shadow:0 1px 6px rgba(0,0,0,0.06);
     --font:'Geist','Inter','DM Sans',system-ui,-apple-system,sans-serif;
     --serif:Georgia,'Times New Roman',serif;
@@ -148,11 +149,18 @@
   .today-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:16px;}
   .today-head .greet{font-size:15px; font-weight:700;}
   .today-head .date{font-size:12px; color:var(--dim2); font-variant-numeric:tabular-nums;}
-  .meal-row{display:flex; justify-content:space-between; align-items:center; gap:12px; padding:10px 0; border-top:1px solid var(--border);}
-  .meal-row .slot{font-size:11px; color:var(--dim2); text-transform:uppercase; letter-spacing:0.8px; font-weight:700; width:74px; flex-shrink:0;}
-  .meal-row .dish{font-size:14px; flex:1;}
-  .meal-row .stat-ic{width:15px; height:15px; color:var(--dim2); flex-shrink:0;}
-  .meal-row .stat-ic.on{color:var(--gold);}
+  .meal-row{display:flex; align-items:center; gap:8px; padding:10px 0; border-top:1px solid var(--border);}
+  .meal-row .slot{font-size:11px; color:var(--dim2); text-transform:uppercase; letter-spacing:0.8px; font-weight:700; width:66px; flex-shrink:0;}
+  .meal-row .dish{font-size:14px; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .row-actions{display:flex; align-items:center; gap:1px; flex-shrink:0;}
+  .ghost-btn{
+    width:26px; height:26px; border-radius:8px; border:none; background:transparent; padding:0;
+    display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--dim2);
+    flex-shrink:0; transition:background .15s, color .15s;
+  }
+  .ghost-btn [data-icon]{width:14px; height:14px;}
+  .ghost-btn:hover{background:var(--dim3); color:var(--text);}
+  .ghost-btn.saved{color:var(--gold);}
   .prep-chip{
     margin-top:14px; display:flex; align-items:center; gap:9px; font-size:12.5px;
     background:var(--gold-soft); border:1px solid var(--gold-soft2); border-radius:10px;
@@ -231,8 +239,11 @@
   .flag.icon-only{padding:4px;}
   .flag.gold{border-color:var(--gold-soft2); background:var(--gold-soft); color:var(--gold);}
   .dc-meals{display:flex; flex-direction:column;}
-  .dc-meals .meal-row{padding:9px 0; gap:10px; justify-content:flex-start;}
-  .dc-meals .meal-ic{width:30px; height:30px; border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .dc-meals .meal-row{padding:9px 0; gap:8px;}
+  .dc-meals .meal-ic{width:28px; height:28px; border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .dc-meals .row-actions{gap:0;}
+  .dc-meals .ghost-btn{width:21px; height:21px; border-radius:6px;}
+  .dc-meals .ghost-btn [data-icon]{width:12px; height:12px;}
   .dc-meals .meal-txt{min-width:0; flex:1;}
   .dc-meals .meal-cat{font-size:10px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; display:flex; align-items:center; margin-bottom:2px;}
   .dc-meals .dish{font-size:13px; line-height:1.3; display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
@@ -246,8 +257,8 @@
   .week-dots button.active{background:var(--gold); width:16px; border-radius:4px; transition:width .2s;}
 
   .legend{display:flex; flex-wrap:wrap; gap:22px; margin-top:26px;}
-  .legend-item{display:flex; align-items:center; gap:8px; font-size:13px; color:var(--dim);}
-  .legend-item [data-icon]{width:14px; height:14px; color:var(--gold); flex-shrink:0;}
+  .legend-item{display:flex; align-items:flex-start; gap:8px; font-size:13px; color:var(--dim); line-height:1.5;}
+  .legend-item [data-icon]{width:14px; height:14px; margin-top:3px; color:var(--gold); flex-shrink:0;}
   .legend-item b{color:var(--text); font-weight:700;}
 
   /* ---------- PANTRY + SHOPPING ---------- */
@@ -259,9 +270,16 @@
   .panel-head h3{font-size:15px; font-weight:700;}
 
   .tile-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(90px,1fr)); gap:9px;}
-  .tile{border:1px solid var(--border); border-radius:var(--radius-sm); padding:11px 9px; text-align:center; font-size:11.5px; font-weight:600;}
+  .tile{
+    border:1px solid var(--border); border-radius:var(--radius-sm); padding:11px 9px; text-align:center;
+    font-size:11.5px; font-weight:600; cursor:pointer; user-select:none;
+    transition:opacity .15s, border-color .15s, transform .1s, box-shadow .15s;
+  }
+  .tile:hover{border-color:var(--gold-soft2); box-shadow:0 0 0 1px var(--gold-soft2);}
+  .tile:active{transform:scale(0.96);}
   .tile [data-icon]{display:block; width:18px; height:18px; margin:0 auto 7px; color:var(--gold);}
   .tile.out{opacity:0.4;}
+  .tile.out:hover{opacity:0.65;}
   .tile .prep-dot{display:block; margin-top:4px; font-size:8px; font-weight:600; letter-spacing:0.2px; color:var(--dim2); text-transform:uppercase;}
 
   .list-row{display:flex; align-items:center; gap:10px; padding:11px 4px; border-top:1px solid var(--border); cursor:pointer; user-select:none;}
@@ -371,6 +389,43 @@
   .foot-links{display:flex; gap:22px; list-style:none; padding:0; margin:0; font-size:13px; color:var(--dim);}
   .foot-links a{text-decoration:none; color:inherit;}
   .foot-links a:hover{color:var(--text);}
+
+  /* ---------- RECIPE OVERLAY ---------- */
+  .recipe-overlay{
+    position:fixed; inset:0; background:rgba(0,0,0,0.75); display:none; align-items:center; justify-content:center;
+    z-index:200; padding:18px; opacity:0; transition:opacity .18s ease;
+  }
+  .recipe-overlay.on{display:flex;}
+  .recipe-overlay.show{opacity:1;}
+  .recipe-modal{
+    background:var(--card); border-radius:20px; width:100%; max-width:480px; max-height:85vh;
+    display:flex; flex-direction:column; overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,0.35);
+    position:relative; transform:translateY(10px); transition:transform .18s ease;
+  }
+  .recipe-overlay.show .recipe-modal{transform:none;}
+  .recipe-close{
+    position:absolute; top:18px; right:18px; background:none; border:none; color:var(--dim); cursor:pointer;
+    width:28px; height:28px; display:flex; align-items:center; justify-content:center; z-index:2; border-radius:8px;
+    transition:background .15s, color .15s;
+  }
+  .recipe-close [data-icon]{width:15px; height:15px;}
+  .recipe-close:hover{color:var(--text); background:var(--dim3);}
+  .recipe-title{font-size:22px; padding:24px 44px 0 24px; margin-bottom:16px; line-height:1.3; flex-shrink:0;}
+  .recipe-divider{border-bottom:1px solid var(--gold-soft2); margin:0 24px; flex-shrink:0;}
+  .recipe-body{flex:1; overflow-y:auto; padding:18px 24px 4px;}
+  .recipe-time{font-size:12px; color:var(--recipe-gold); letter-spacing:0.8px; font-weight:600; margin-bottom:20px;}
+  .recipe-section{border-left:2px solid var(--recipe-green); padding-left:14px; margin-bottom:18px;}
+  .recipe-label{font-size:9px; font-weight:700; color:var(--recipe-gold); letter-spacing:2.5px; text-transform:uppercase; margin-bottom:12px;}
+  .recipe-list{display:flex; flex-direction:column; gap:8px;}
+  .recipe-list div{display:flex; align-items:flex-start; gap:10px; font-size:14px; line-height:1.7;}
+  .recipe-list span{color:var(--recipe-gold); flex-shrink:0;}
+  .recipe-hr{border-bottom:1px solid var(--gold-soft2); margin:0 0 18px;}
+  .recipe-steps{display:flex; flex-direction:column; gap:14px;}
+  .recipe-step{display:flex; gap:12px; align-items:flex-start;}
+  .recipe-step-num{font-family:var(--serif); font-style:italic; font-weight:700; color:var(--recipe-gold); min-width:22px; font-size:12px; padding-top:2px; flex-shrink:0;}
+  .recipe-step-text{font-size:14px; line-height:1.65;}
+  .recipe-footer{display:flex; gap:8px; padding:14px 24px 20px; border-top:1px solid var(--border); flex-shrink:0;}
+  .recipe-saved-note{flex:1; font-size:13px; color:var(--dim); display:flex; align-items:center; gap:7px;}
 </style>
 
 <header class="site">
@@ -410,25 +465,38 @@
           <span class="greet">Good evening, Sofia</span>
           <span class="date">Tue, 14 Oct</span>
         </div>
-        <div class="meal-row">
+        <div class="meal-row" data-dish="Poha">
           <span class="slot">Breakfast</span>
           <span class="dish">Poha</span>
-          <span class="stat-ic on" data-icon="check"></span>
+          <span class="row-actions">
+            <button class="ghost-btn" data-action="save" aria-label="Save Poha to My Dishes"><span data-icon="bookmark"></span></button>
+            <button class="ghost-btn" data-action="recipe" aria-label="View recipe for Poha"><span data-icon="recipe"></span></button>
+          </span>
         </div>
-        <div class="meal-row">
+        <div class="meal-row" data-dish="Chicken Teriyaki Bowl">
           <span class="slot">Lunch</span>
           <span class="dish">Chicken Teriyaki Bowl</span>
-          <span class="stat-ic on" data-icon="check"></span>
+          <span class="row-actions">
+            <button class="ghost-btn" data-action="save" aria-label="Save Chicken Teriyaki Bowl to My Dishes"><span data-icon="bookmark"></span></button>
+            <button class="ghost-btn" data-action="recipe" aria-label="View recipe for Chicken Teriyaki Bowl"><span data-icon="recipe"></span></button>
+          </span>
         </div>
-        <div class="meal-row">
+        <div class="meal-row" data-dish="Guacamole with Tortilla Chips">
           <span class="slot">Snacks</span>
           <span class="dish">Guacamole with Tortilla Chips</span>
-          <span class="stat-ic on" data-icon="check"></span>
+          <span class="row-actions">
+            <button class="ghost-btn" data-action="save" aria-label="Save Guacamole with Tortilla Chips to My Dishes"><span data-icon="bookmark"></span></button>
+            <button class="ghost-btn" data-action="recipe" aria-label="View recipe for Guacamole with Tortilla Chips"><span data-icon="recipe"></span></button>
+          </span>
         </div>
-        <div class="meal-row">
+        <div class="meal-row" data-dish="Pasta with Cream Sauce">
           <span class="slot">Dinner</span>
           <span class="dish">Pasta with Cream Sauce</span>
           <span class="badge">AI</span>
+          <span class="row-actions">
+            <button class="ghost-btn" data-action="save" aria-label="Save Pasta with Cream Sauce to My Dishes"><span data-icon="bookmark"></span></button>
+            <button class="ghost-btn" data-action="recipe" aria-label="View recipe for Pasta with Cream Sauce"><span data-icon="recipe"></span></button>
+          </span>
         </div>
         <div class="prep-chip">
           <span data-icon="clock"></span>
@@ -722,6 +790,30 @@
   </div>
 </footer>
 
+<div class="recipe-overlay" id="recipe-overlay" role="dialog" aria-modal="true" aria-labelledby="recipe-title">
+  <div class="recipe-modal">
+    <button class="recipe-close" id="recipe-close" aria-label="Close recipe"><span data-icon="close"></span></button>
+    <h3 class="recipe-title dish" id="recipe-title"></h3>
+    <div class="recipe-divider"></div>
+    <div class="recipe-body">
+      <div class="recipe-time" id="recipe-time"></div>
+      <div class="recipe-section">
+        <div class="recipe-label">Ingredients</div>
+        <div class="recipe-list" id="recipe-ingredients"></div>
+      </div>
+      <div class="recipe-hr"></div>
+      <div class="recipe-section">
+        <div class="recipe-label">Method</div>
+        <div class="recipe-steps" id="recipe-steps"></div>
+      </div>
+    </div>
+    <div class="recipe-footer">
+      <button class="pill gold" id="recipe-save-btn" style="flex:1;">+ Add to My Dishes</button>
+      <button class="pill" id="recipe-close-btn">Close</button>
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -753,7 +845,11 @@
     web: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.4 2.5 3.6 5.6 3.6 9s-1.2 6.5-3.6 9c-2.4-2.5-3.6-5.6-3.6-9S9.6 5.5 12 3z"/>',
     plus: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
     chevronL: '<polyline points="15 18 9 12 15 6"/>',
-    chevronR: '<polyline points="9 18 15 12 9 6"/>'
+    chevronR: '<polyline points="9 18 15 12 9 6"/>',
+    refresh: '<path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/>',
+    bookmark: '<path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>',
+    recipe: '<path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2Z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7Z"/>',
+    close: '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>'
   };
   function ic(name, strokeW, sizePx){
     var inner = ICONS[name] || "";
@@ -887,10 +983,14 @@
   function dayCardHtml(d){
     var mealsHtml = ["Breakfast","Lunch","Snacks","Dinner"].map(function(mc){
       var meal = d.meals[mc], meta = MEAL_META[mc];
-      return '<div class="meal-row">' +
+      return '<div class="meal-row" data-dish="' + meal.name + '">' +
         '<span class="meal-ic" style="background:' + hexToRgba(meta.color,0.16) + ';color:' + meta.color + '">' + ic(meta.icon, 1.8, 14) + '</span>' +
         '<div class="meal-txt"><div class="meal-cat" style="color:' + meta.color + '">' + mc + (meal.ai ? '<span class="badge">AI</span>' : '') + '</div>' +
         '<span class="dish">' + meal.name + '</span></div>' +
+        '<span class="row-actions">' +
+          '<button class="ghost-btn" data-action="save" aria-label="Save ' + meal.name + '">' + ic("bookmark", 1.8, 12) + '</button>' +
+          '<button class="ghost-btn" data-action="recipe" aria-label="Recipe for ' + meal.name + '">' + ic("recipe", 1.8, 12) + '</button>' +
+        '</span>' +
       '</div>';
     }).join("");
     var pct = Math.round(d.pantry.inStock / d.pantry.total * 100);
@@ -940,6 +1040,11 @@
     });
   });
   setActiveDot(0);
+
+  /* pantry tile stock toggle */
+  document.querySelectorAll(".tile-grid .tile").forEach(function(t){
+    t.addEventListener("click", function(){ t.classList.toggle("out"); });
+  });
 
   /* shopping list interactivity */
   var rows = document.querySelectorAll("#shop-list [data-row]");
@@ -1078,5 +1183,139 @@
     Object.keys(DAY_COLOR_HEX).map(function(c){
       return '<div class="ck-item"><i style="background:' + DAY_COLOR_HEX[c] + '"></i>' + DAY_COLOR_LABEL[c] + '</div>';
     }).join("") + '</div>';
+
+  /* ---------- RECIPES (from the app's own static recipe database) ---------- */
+  var RECIPES = {
+    "Poha": "## Ingredients\n- Poha (2 cups, rinsed)\n- Onions (1, diced)\n- Green Chilli (1)\n- Mustard Seeds (1 tsp)\n- Curry Leaves (8)\n- Turmeric Powder (½ tsp)\n- Peanuts (2 tbsp)\n- Limes (½)\n## Steps\n1. Rinse poha and drain, let sit 5 min until soft.\n2. Heat oil, splutter mustard seeds and curry leaves.\n3. Add peanuts, fry 1 min. Add onion and chilli, cook 3 min.\n4. Add turmeric and poha, toss gently on low heat 3 min.\n5. Season with salt, squeeze lime and serve immediately.\n## Time\nPrep: 8 min · Cook: 10 min",
+    "Rajma Chawal": "## Ingredients\n- Rajma (1 cup, soaked overnight)\n- Basmati Rice (1 cup)\n- Onions (1, chopped)\n- Tomatoes (2, pureed)\n- Garam Masala (2 tsp)\n- Ginger (1 inch)\n- Garlic (3 cloves)\n- Ghee (2 tbsp)\n## Steps\n1. Pressure cook rajma until tender.\n2. Cook basmati rice and keep warm.\n3. Sauté onions in ghee until golden.\n4. Add ginger, garlic and tomato purée, cook 8 min.\n5. Add cooked rajma, garam masala and ½ cup water, simmer 10 min.\n6. Serve rajma over steamed rice with raw onion and pickle.\n## Time\nPrep: 10 min · Cook: 35 min (+ overnight soak)",
+    "Paneer Butter Masala": "## Ingredients\n- Paneer (250g)\n- Tomatoes (3, pureed)\n- Butter (3 tbsp)\n- Fresh Cream (3 tbsp)\n- Garam Masala (1½ tsp)\n- Onions (1)\n- Garlic (3 cloves)\n## Steps\n1. Blend onion and garlic, cook in butter 5 min.\n2. Add tomato purée, cook 10 min until thick.\n3. Add garam masala, season.\n4. Add ½ cup water, bring to simmer.\n5. Add paneer, cook 5 min.\n6. Stir in cream and serve with naan or rice.\n## Time\nPrep: 10 min · Cook: 25 min",
+    "Bhel Puri": "## Ingredients\n- Poha Chivda (2 cups)\n- Onions (½, fine)\n- Tomatoes (1, fine)\n- Green Chutney (2 tbsp)\n- Tamarind Paste (2 tbsp)\n- Coriander (handful)\n## Steps\n1. Mix green chutney and tamarind paste.\n2. Toss poha chivda with onion and tomato.\n3. Add chutney mixture and toss quickly.\n4. Garnish with coriander.\n5. Serve immediately — bhel puri goes soggy fast.\n## Time\nPrep: 5 min · Cook: 0 min",
+    "Crepes": "## Ingredients\n- All-Purpose Flour (1 cup)\n- Eggs (2)\n- Milk (300ml)\n- Butter (2 tbsp)\n- Sugar (1 tbsp)\n## Steps\n1. Whisk flour, eggs and milk into smooth batter, rest 20 min.\n2. Melt butter in pan on medium heat.\n3. Pour small ladle of batter and swirl to coat pan thinly.\n4. Cook 1–2 min, flip when edges lift, cook 30 sec.\n5. Serve with honey, jam or lemon and sugar.\n## Time\nPrep: 25 min · Cook: 15 min",
+    "French Onion Soup": "## Ingredients\n- Onions (4, sliced)\n- Butter (3 tbsp)\n- White Wine (½ cup)\n- Gruyere (100g, grated)\n- White Bread (4 slices)\n- Bay Leaves (2)\n- Thyme (3 sprigs)\n## Steps\n1. Cook onions in butter over low heat 40 min until caramelized.\n2. Add wine, cook 3 min until evaporated.\n3. Add 1L water with bay leaves and thyme, simmer 20 min.\n4. Toast bread slices, top with gruyere and grill until bubbling.\n5. Ladle soup into oven-safe bowls, float cheesy toast on top.\n## Time\nPrep: 5 min · Cook: 65 min",
+    "Cheese Platter": "## Ingredients\n- Gruyere (100g)\n- Cheddar (100g)\n- White Bread (4 slices)\n- Dijon Mustard (2 tbsp)\n- Almonds (3 tbsp)\n- Dates (6)\n## Steps\n1. Slice cheeses.\n2. Toast bread.\n3. Arrange cheeses, bread, almonds, dates and mustard on board.\n4. Serve at room temperature.\n## Time\nPrep: 8 min · Cook: 3 min",
+    "Coq au Vin": "## Ingredients\n- Chicken Breast (500g)\n- Bacon (150g)\n- Mushrooms (200g)\n- Onions (1)\n- Garlic (3 cloves)\n- White Wine (200ml)\n- Thyme (3 sprigs)\n- Butter (2 tbsp)\n## Steps\n1. Brown chicken in butter, set aside.\n2. Fry bacon, add onions and garlic.\n3. Add mushrooms, cook 3 min.\n4. Add wine and thyme, bring to simmer.\n5. Return chicken, cover and cook 25 min.\n## Time\nPrep: 10 min · Cook: 40 min",
+    "Labneh Toast": "## Ingredients\n- Pita Bread (4)\n- Yogurt (1 cup, drained overnight)\n- Olive Oil (3 tbsp)\n- Zatar (2 tsp)\n- Mint (handful)\n## Steps\n1. Drain yogurt in cloth overnight to make labneh.\n2. Toast pita bread.\n3. Spread labneh generously on pita.\n4. Drizzle olive oil over.\n5. Sprinkle zatar and fresh mint.\n## Time\nPrep: 5 min (+ overnight drain) · Cook: 3 min",
+    "Falafel Wrap": "## Ingredients\n- Chickpeas (400g, cooked)\n- Pita Bread (4)\n- Cucumber (1)\n- Tomatoes (2)\n- Tahini (4 tbsp)\n- Garlic (2 cloves)\n- Cumin Powder (1 tsp)\n- Parsley (handful)\n## Steps\n1. Blend chickpeas, garlic, cumin, parsley and salt into rough mix.\n2. Shape into balls, refrigerate 15 min.\n3. Shallow-fry falafels 3 min per side until crispy.\n4. Mix tahini with lemon juice and water into smooth sauce.\n5. Warm pita, layer with cucumber, tomatoes and falafels.\n6. Drizzle tahini sauce and serve.\n## Time\nPrep: 25 min · Cook: 10 min",
+    "Hummus with Pita": "## Ingredients\n- Chickpeas (400g)\n- Tahini (3 tbsp)\n- Lemons (1)\n- Garlic (1 clove)\n- Olive Oil (3 tbsp)\n- Pita Bread (4)\n## Steps\n1. Blend chickpeas, tahini, lemon juice, garlic and salt until smooth.\n2. Add ice water 1 tbsp at a time until creamy.\n3. Spread in bowl, drizzle olive oil and paprika.\n4. Warm pita in dry pan 30 sec per side.\n5. Serve together.\n## Time\nPrep: 8 min · Cook: 3 min",
+    "Chicken Shawarma": "## Ingredients\n- Chicken Breast (500g)\n- Pita Bread (4)\n- Yogurt (4 tbsp)\n- Garlic (3 cloves)\n- Lemons (1)\n- Cumin Powder (2 tsp)\n- Smoked Paprika (1 tsp)\n- Tahini (3 tbsp)\n## Steps\n1. Marinate chicken in yogurt, garlic, lemon, cumin and paprika 1 hour.\n2. Grill or pan-fry 5 min per side, slice thin.\n3. Mix tahini with lemon juice and water for sauce.\n4. Warm pita.\n5. Fill with chicken and tahini sauce.\n## Time\nPrep: 65 min · Cook: 12 min",
+    "Pancakes": "## Ingredients\n- All-Purpose Flour (1½ cups)\n- Eggs (2)\n- Milk (300ml)\n- Butter (3 tbsp)\n- Sugar (2 tbsp)\n- Baking Powder (2 tsp)\n## Steps\n1. Whisk flour, sugar and baking powder.\n2. Beat eggs, milk and melted butter.\n3. Combine wet and dry — lumps are fine.\n4. Cook ladles in buttered pan 2 min per side.\n5. Serve with maple syrup.\n## Time\nPrep: 5 min · Cook: 15 min",
+    "Mac and Cheese": "## Ingredients\n- Pasta (300g)\n- Cheddar (200g, grated)\n- Milk (300ml)\n- Butter (3 tbsp)\n- All-Purpose Flour (3 tbsp)\n- Mustard Sauce (1 tsp)\n- Black Pepper (½ tsp)\n## Steps\n1. Cook pasta until al dente, drain.\n2. Melt butter, whisk in flour, cook 1 min.\n3. Gradually add milk, stirring until thick.\n4. Remove from heat, add cheddar, mustard and pepper.\n5. Fold in pasta, reheat gently 2 min.\n6. Serve immediately.\n## Time\nPrep: 5 min · Cook: 20 min",
+    "Cornbread": "## Ingredients\n- Maize Flour (1 cup)\n- All-Purpose Flour (1 cup)\n- Eggs (2)\n- Milk (200ml)\n- Butter (4 tbsp)\n- Sugar (3 tbsp)\n- Baking Powder (2 tsp)\n## Steps\n1. Mix dry ingredients.\n2. Whisk eggs, milk and melted butter.\n3. Combine wet and dry.\n4. Pour into greased pan.\n5. Bake at 200°C 20 min.\n## Time\nPrep: 8 min · Cook: 20 min",
+    "BBQ Chicken": "## Ingredients\n- Chicken Breast (500g)\n- Barbecue Sauce (6 tbsp)\n- Garlic (3 cloves, minced)\n- Smoked Paprika (1 tsp)\n- Onions (1)\n- Butter (2 tbsp)\n## Steps\n1. Mix barbecue sauce, garlic and smoked paprika.\n2. Marinate chicken 30 min.\n3. Grill or pan-fry on medium-high 5 min per side.\n4. Baste with extra sauce in last 2 min of cooking.\n5. Sauté onions in butter until caramelized.\n6. Serve chicken over onions.\n## Time\nPrep: 35 min · Cook: 15 min",
+    "Tamago Gohan": "## Ingredients\n- White Rice (1 cup, hot cooked)\n- Eggs (1, very fresh)\n- Soy Sauce (1 tbsp)\n- Sesame Oil (½ tsp)\n- Spring Onion (1 stalk)\n## Steps\n1. Place very hot freshly cooked rice in bowl.\n2. Crack raw egg directly over hot rice.\n3. Add soy sauce and sesame oil.\n4. Mix vigorously until egg becomes frothy and coats rice.\n5. Top with sliced spring onion.\n## Time\nPrep: 2 min · Cook: 0 min",
+    "Chicken Teriyaki Bowl": "## Ingredients\n- Chicken Breast (400g)\n- Soy Sauce (4 tbsp)\n- Mirin (3 tbsp)\n- Sake (2 tbsp)\n- White Rice (1½ cups)\n- Spring Onion (3 stalks)\n- Sesame Seeds (1 tbsp)\n## Steps\n1. Cook rice.\n2. Mix soy sauce, mirin and sake into teriyaki sauce.\n3. Pan-fry chicken 4 min per side on medium-high.\n4. Pour sauce into pan, cook 2 min until chicken is glazed.\n5. Rest 3 min, then slice.\n6. Serve over rice, drizzle pan sauce, top with spring onion and sesame seeds.\n## Time\nPrep: 5 min · Cook: 20 min",
+    "Edamame with Salt": "## Ingredients\n- Edamame (400g, in pods)\n- Sesame Oil (1 tsp)\n## Steps\n1. Boil edamame in salted water 4–5 min.\n2. Drain and drizzle sesame oil.\n3. Toss with extra sea salt.\n4. Serve warm in pods.\n## Time\nPrep: 2 min · Cook: 5 min",
+    "Chicken Ramen": "## Ingredients\n- Noodles (300g)\n- Chicken Breast (400g)\n- Dashi Stock (1L)\n- Soy Sauce (4 tbsp)\n- Mirin (2 tbsp)\n- Eggs (2)\n- Spring Onion (3 stalks)\n- Mushrooms (150g)\n## Steps\n1. Simmer chicken in dashi with soy sauce and mirin 20 min.\n2. Remove chicken and slice. Add mushrooms to broth.\n3. Soft-boil eggs 6½ min, peel and halve.\n4. Cook noodles until al dente, drain.\n5. Ladle hot broth into bowls over noodles.\n6. Top with chicken, egg, mushrooms and spring onion.\n## Time\nPrep: 10 min · Cook: 30 min",
+    "Arepas with Cheese": "## Ingredients\n- Maize Flour (2 cups)\n- Cheddar (150g)\n- Butter (2 tbsp)\n- Salt (1 tsp)\n## Steps\n1. Mix maize flour with warm water and salt into dough.\n2. Divide into balls, flatten into discs.\n3. Cook in buttered pan 5 min per side until golden crust forms.\n4. Slice open, stuff with cheddar.\n5. Return to pan 2 min until cheese melts.\n## Time\nPrep: 8 min · Cook: 15 min",
+    "Peruvian Chicken Rice": "## Ingredients\n- White Rice (1 cup)\n- Chicken Breast (400g)\n- Garlic (4 cloves)\n- Cumin Seeds (2 tsp)\n- Smoked Paprika (1 tsp)\n- Limes (1)\n- Coriander (handful)\n## Steps\n1. Marinate chicken with garlic, cumin, paprika and lime 15 min.\n2. Grill or pan-fry 5 min per side.\n3. Cook rice.\n4. Slice chicken over rice.\n5. Top with coriander and lime.\n## Time\nPrep: 18 min · Cook: 25 min",
+    "Guacamole with Tortilla Chips": "## Ingredients\n- Avocado (3)\n- Tomatoes (1, fine)\n- Onions (¼, fine)\n- Limes (1)\n- Coriander (handful)\n- Corn Tortillas (4)\n## Steps\n1. Mash avocado with lime and salt.\n2. Stir in tomato, onion and coriander.\n3. Bake cut tortilla pieces at 200°C 8 min.\n4. Serve guacamole with chips.\n## Time\nPrep: 8 min · Cook: 8 min",
+    "Fried Plantain": "## Ingredients\n- Bananas (3, very ripe)\n- Olive Oil (3 tbsp)\n- Salt (pinch)\n## Steps\n1. Peel bananas and slice diagonally 1cm thick.\n2. Heat oil in pan on medium.\n3. Fry slices 3 min per side until golden.\n4. Drain on paper towel.\n5. Season with salt.\n## Time\nPrep: 3 min · Cook: 8 min",
+    "Chimichurri Chicken": "## Ingredients\n- Chicken Breast (500g)\n- Coriander (1 bunch)\n- Garlic (4 cloves)\n- Olive Oil (6 tbsp)\n- Limes (1)\n- Smoked Paprika (1 tsp)\n- Onions (1)\n## Steps\n1. Blend coriander, garlic, olive oil, lime juice and salt into chimichurri.\n2. Marinate chicken in half the chimichurri 30 min.\n3. Grill or pan-sear 5–6 min per side.\n4. Sauté onions until golden and caramelized.\n5. Rest chicken 5 min, then slice.\n6. Serve with onions and remaining chimichurri drizzled over.\n## Time\nPrep: 35 min · Cook: 15 min",
+    "Pasta with Cream Sauce": "## Ingredients\n- Pasta (300g)\n- Fresh Cream (250ml)\n- Garlic (3 cloves)\n- Parmesan (60g)\n- Butter (2 tbsp)\n- Thyme (3 sprigs)\n- Shallots (2)\n## Steps\n1. Cook pasta until al dente.\n2. Sauté shallots and garlic in butter.\n3. Add cream and thyme, reduce 4 min.\n4. Toss pasta in cream sauce.\n5. Stir in parmesan off heat.\n## Time\nPrep: 5 min · Cook: 18 min",
+    "Mandazi": "## Ingredients\n- All-Purpose Flour (2 cups)\n- Coconut Milk (150ml)\n- Sugar (3 tbsp)\n- Cardamom (1 tsp, ground)\n- Eggs (1)\n- Butter (2 tbsp, melted)\n- Sunflower Oil (for frying)\n## Steps\n1. Mix flour, sugar and cardamom.\n2. Whisk egg with coconut milk and butter.\n3. Combine wet and dry into a soft dough, knead 3 min.\n4. Rest 15 min, then roll to 1cm thick.\n5. Cut into triangles or rounds.\n6. Deep-fry at 170°C for 3–4 min per side until golden.\n7. Drain and dust with sugar.\n## Time\nPrep: 20 min · Cook: 20 min\n## Allergens\nGluten · Eggs",
+    "Moroccan Chicken Tagine": "## Ingredients\n- Chicken Breast (500g)\n- Onions (2, sliced)\n- Chickpeas (200g)\n- Dried Apricots (80g)\n- Cinnamon (1 stick)\n- Cumin Powder (2 tsp)\n- Ginger (2cm, grated)\n- Garlic (3 cloves)\n- Olive Oil (3 tbsp)\n- Lemons (1, zested and juiced)\n## Steps\n1. Brown chicken in olive oil 3 min per side.\n2. Sauté onions until soft.\n3. Add garlic, ginger, cumin and cinnamon.\n4. Return chicken, add chickpeas, apricots and 300ml water.\n5. Simmer covered 30 min until chicken is tender.\n6. Stir in lemon juice and zest.\n7. Serve with couscous or rice.\n## Time\nPrep: 10 min · Cook: 40 min",
+    "Kelewele": "## Ingredients\n- Plantain (2, ripe)\n- Ginger (2cm, grated)\n- Green Chilli (1, minced)\n- Nutmeg (pinch)\n- Salt (1 tsp)\n- Sunflower Oil (for frying)\n## Steps\n1. Peel plantain and cut into 2cm chunks.\n2. Mix ginger, chilli, nutmeg and salt into a rub.\n3. Toss plantain in the spice mix, rest 10 min.\n4. Deep-fry at 175°C for 4–5 min until caramelised and golden.\n5. Drain on paper towel and serve immediately.\n## Time\nPrep: 12 min · Cook: 10 min",
+    "Lamb Tagine": "## Ingredients\n- Mutton (600g, chunks)\n- Chickpeas (200g, cooked)\n- Onions (2, diced)\n- Cinnamon (1 tsp, ground)\n- Cumin Powder (2 tsp)\n- Dried Apricots (80g)\n- Raisins (2 tbsp)\n- Garlic (3 cloves)\n- Ginger (2cm)\n- Olive Oil (3 tbsp)\n## Steps\n1. Brown mutton in batches in oil.\n2. Sauté onions, garlic and ginger 5 min.\n3. Add cinnamon and cumin, stir 1 min.\n4. Return mutton, add chickpeas, apricots, raisins and 400ml water.\n5. Cover and simmer 50 min until tender.\n6. Serve with couscous or rice.\n## Time\nPrep: 12 min · Cook: 60 min",
+    "Shakshuka": "## Ingredients\n- Eggs (4)\n- Tomatoes (3, diced)\n- Capsicum (1, diced)\n- Onions (1, diced)\n- Garlic (3 cloves)\n- Cumin Seeds (1 tsp)\n- Paprika (1 tsp)\n- Olive Oil (2 tbsp)\n- Coriander (handful)\n## Steps\n1. Sauté onions and capsicum in olive oil on medium heat 5 min.\n2. Add garlic, cumin and paprika, cook 1 min.\n3. Add tomatoes and simmer 10 min until thick sauce forms.\n4. Create wells in sauce, crack in eggs.\n5. Cover and cook 5–7 min until whites are set but yolks soft.\n6. Top with coriander and serve with bread.\n## Time\nPrep: 8 min · Cook: 20 min\n## Allergens\nEggs"
+  };
+
+  function parseRecipeMD(md){
+    if (typeof md !== "string") return null;
+    var out = { ingredients: [], steps: [], time: "" };
+    var current = null;
+    md.split("\n").forEach(function(raw){
+      var l = raw.trim();
+      if (/^#+\s*ingredients/i.test(l)) { current = "ingredients"; return; }
+      if (/^#+\s*steps/i.test(l)) { current = "steps"; return; }
+      if (/^#+\s*time/i.test(l)) { current = "time"; return; }
+      if (!l) return;
+      if (current === "ingredients") out.ingredients.push(l.replace(/^[-*]\s*/, ""));
+      else if (current === "steps") out.steps.push(l.replace(/^\d+[\.\)]\s*/, ""));
+      else if (current === "time") out.time += (out.time ? " " : "") + l;
+    });
+    if (!out.ingredients.length && !out.steps.length) return null;
+    return out;
+  }
+  function toRoman(n){
+    var v=[1000,900,500,400,100,90,50,40,10,9,5,4,1], s=["M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"], r="";
+    for (var i=0;i<v.length;i++){ while(n>=v[i]){ r+=s[i]; n-=v[i]; } }
+    return r;
+  }
+
+  /* ---------- RECIPE OVERLAY ---------- */
+  var SAVED_DISHES = {};
+  var overlayEl = document.getElementById("recipe-overlay");
+  var recipeTitleEl = document.getElementById("recipe-title");
+  var recipeTimeEl = document.getElementById("recipe-time");
+  var recipeIngEl = document.getElementById("recipe-ingredients");
+  var recipeStepsEl = document.getElementById("recipe-steps");
+  var recipeSaveBtn = document.getElementById("recipe-save-btn");
+  var currentRecipeDish = null;
+
+  function updateSaveUI(dish){
+    var saved = !!SAVED_DISHES[dish];
+    document.querySelectorAll('[data-dish]').forEach(function(row){
+      if (row.getAttribute("data-dish") !== dish) return;
+      var btn = row.querySelector('[data-action="save"]');
+      if (btn) btn.classList.toggle("saved", saved);
+    });
+    if (currentRecipeDish === dish){
+      if (saved){
+        recipeSaveBtn.className = "recipe-saved-note";
+        recipeSaveBtn.innerHTML = '<span style="width:6px;height:6px;border-radius:50%;background:var(--dim2);display:inline-block;flex-shrink:0;"></span>Already in My Dishes';
+      } else {
+        recipeSaveBtn.className = "pill gold";
+        recipeSaveBtn.style.flex = "1";
+        recipeSaveBtn.textContent = "+ Add to My Dishes";
+      }
+    }
+  }
+  function toggleSave(dish){
+    SAVED_DISHES[dish] = !SAVED_DISHES[dish];
+    updateSaveUI(dish);
+  }
+  function openRecipe(dish){
+    currentRecipeDish = dish;
+    recipeTitleEl.textContent = dish;
+    var parsed = parseRecipeMD(RECIPES[dish]);
+    if (!parsed){
+      recipeTimeEl.textContent = "";
+      recipeIngEl.innerHTML = "";
+      recipeStepsEl.innerHTML = '<div class="recipe-step-text" style="color:var(--dim);">Recipe not saved yet — Miso would ask AI for this one.</div>';
+    } else {
+      recipeTimeEl.textContent = parsed.time.split("·").map(function(t){ return t.trim(); }).join("   ·   ");
+      recipeIngEl.innerHTML = parsed.ingredients.map(function(ing){
+        return '<div><span>—</span>' + ing + '</div>';
+      }).join("");
+      recipeStepsEl.innerHTML = parsed.steps.map(function(step,i){
+        return '<div class="recipe-step"><span class="recipe-step-num">' + toRoman(i+1) + '.</span><span class="recipe-step-text">' + step + '</span></div>';
+      }).join("");
+    }
+    updateSaveUI(dish);
+    overlayEl.classList.add("on");
+    requestAnimationFrame(function(){ overlayEl.classList.add("show"); });
+    document.body.style.overflow = "hidden";
+  }
+  function closeRecipe(){
+    overlayEl.classList.remove("show");
+    document.body.style.overflow = "";
+    setTimeout(function(){ overlayEl.classList.remove("on"); }, 180);
+  }
+  document.getElementById("recipe-close").addEventListener("click", closeRecipe);
+  document.getElementById("recipe-close-btn").addEventListener("click", closeRecipe);
+  overlayEl.addEventListener("click", function(e){ if (e.target === overlayEl) closeRecipe(); });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape" && overlayEl.classList.contains("on")) closeRecipe(); });
+  recipeSaveBtn.addEventListener("click", function(){ if (currentRecipeDish) toggleSave(currentRecipeDish); });
+
+  document.addEventListener("click", function(e){
+    var btn = e.target.closest && e.target.closest("[data-action]");
+    if (!btn) return;
+    var row = btn.closest("[data-dish]");
+    if (!row) return;
+    var dish = row.getAttribute("data-dish");
+    var action = btn.getAttribute("data-action");
+    if (action === "recipe") openRecipe(dish);
+    else if (action === "save") toggleSave(dish);
+  });
 })();
 </script>
