@@ -895,7 +895,7 @@
     var missingHtml = d.pantry.missing.length ? '<div class="pc-missing">Missing <span>' + d.pantry.missing.join(", ") + '</span></div>' : "";
     var flags = (d.weekend ? '<span class="flag gold">' + ic("star", 1.5, 9) + 'Gourmet</span>' : "") + (d.locked ? '<span class="flag icon-only">' + ic("lock", 1.5, 9) + '</span>' : "");
     return '<div class="day-card card">' +
-      '<div class="dc-head"><div class="dc-day"><span>' + d.day + '</span><small>' + d.date + ' · ' + d.cuisine + '</small></div><div class="dc-flags">' + flags + '</div></div>' +
+      '<div class="dc-head"><div class="dc-day"><span>' + d.day + '</span><small>' + d.date + '</small></div><div class="dc-flags">' + flags + '</div></div>' +
       '<div class="dc-meals">' + mealsHtml + '</div>' +
       '<div class="dc-pantry"><div class="pc-row"><span>Pantry check</span><b>' + d.pantry.inStock + ' of ' + d.pantry.total + '</b></div>' +
       '<div class="pc-bar"><i style="width:' + pct + '%"></i></div>' + missingHtml + '</div>' +
