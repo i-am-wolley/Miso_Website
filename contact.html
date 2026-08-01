@@ -130,11 +130,11 @@
   @media (max-width:820px){ .contact-grid{grid-template-columns:1fr;} }
 
   .help-list{display:flex; flex-direction:column; gap:18px;}
-  .help-item{display:flex; gap:13px;}
+  .help-item-row{display:flex; align-items:center; gap:13px; margin-bottom:8px;}
   .help-item .ic-wrap{width:34px; height:34px; border-radius:10px; background:var(--gold-soft); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
   .help-item .ic-wrap [data-icon]{width:16px; height:16px; color:var(--gold);}
-  .help-item h4{font-size:14px; font-weight:700; margin-bottom:4px;}
-  .help-item p{font-size:13px; color:var(--dim); line-height:1.55;}
+  .help-item h4{font-size:14px; font-weight:700;}
+  .help-item p{font-size:13px; color:var(--dim); line-height:1.55; margin-left:47px;}
 
   /* ---------- FORM ---------- */
   .form-row{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
@@ -215,20 +215,20 @@
       <div class="contact-grid">
         <div class="help-list reveal on">
           <div class="help-item">
-            <span class="ic-wrap"><span data-icon="sparkle"></span></span>
-            <div><h4>Have a feature idea?</h4><p>Tell us what you were trying to plan or cook when you hit the wall — specifics help us prioritize.</p></div>
+            <div class="help-item-row"><span class="ic-wrap"><span data-icon="sparkle"></span></span><h4>Have a feature idea?</h4></div>
+            <p>Tell us what you were trying to plan or cook when you hit the wall — specifics help us prioritize.</p>
           </div>
           <div class="help-item">
-            <span class="ic-wrap"><span data-icon="unlink"></span></span>
-            <div><h4>Something broken?</h4><p>Mention which platform you're on and roughly when it happened — it helps us track it down faster.</p></div>
+            <div class="help-item-row"><span class="ic-wrap"><span data-icon="unlink"></span></span><h4>Something broken?</h4></div>
+            <p>Mention which platform you're on and roughly when it happened — it helps us track it down faster.</p>
           </div>
           <div class="help-item">
-            <span class="ic-wrap"><span data-icon="link"></span></span>
-            <div><h4>Press or partnership?</h4><p>Include your outlet or company and a short note on what you're proposing.</p></div>
+            <div class="help-item-row"><span class="ic-wrap"><span data-icon="link"></span></span><h4>Press or partnership?</h4></div>
+            <p>Include your outlet or company and a short note on what you're proposing.</p>
           </div>
           <div class="help-item">
-            <span class="ic-wrap"><span data-icon="clock"></span></span>
-            <div><h4>Response time</h4><p>We read every message and typically reply within 1–2 business days.</p></div>
+            <div class="help-item-row"><span class="ic-wrap"><span data-icon="clock"></span></span><h4>Response time</h4></div>
+            <p>We read every message and typically reply within 1–2 business days.</p>
           </div>
         </div>
 
